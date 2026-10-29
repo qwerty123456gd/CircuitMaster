@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CircuitMaster Web</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#0f111a] text-gray-200 min-h-screen flex flex-col md:flex-row font-sans antialiased overflow-x-hidden">
+
+    <!-- МОБИЛЬНЫЙ ХЕДЕР -->
+    <header class="md:hidden flex items-center justify-between px-4 py-3 bg-[#161926] border-b border-gray-800/80 sticky top-0 z-30">
+        <button id="btn-open-drawer" class="p-2 text-gray-300 hover:text-white rounded-lg focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h1 id="mobile-header-title" class="text-lg font-medium text-white">Главная</h1>
+        <button id="btn-profile-mobile" class="p-2 text-gray-300 hover:text-white rounded-lg focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        </button>
+    </header>
+
+    <!-- САЙДБАР -->
+    <div id="drawer-overlay" class="fixed inset-0 bg-black/60 hidden z-40 md:hidden"></div>
+    <aside id="sidebar" class="fixed md:static top-0 left-0 h-full w-64 bg-[#161926] border-r border-gray-800/80 z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col justify-between p-4 flex-shrink-0">
+        <div class="space-y-6">
+            <div class="flex items-center space-x-3 px-2 py-1">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20 text-xl">
+                    ⚡
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight text-white leading-none">CircuitMaster</h2>
+                    <span class="text-[11px] text-indigo-400 font-medium">Web v1.0</span>
+                </div>
+            </div>
+
+            <nav class="space-y-1">
+                <p class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Разделы</p>
+                <button class="nav-item active" data-screen="main"><span class="text-lg">🏠</span><span>Главная</span></button>
+                <button class="nav-item" data-screen="course"><span class="text-lg">📖</span><span>Курс</span></button>
+                <button class="nav-item" data-screen="textbooks"><span class="text-lg">📚</span><span>Учебники</span></button>
+                <button class="nav-item" data-screen="tests"><span class="text-lg">📋</span><span>Задачки и тесты</span></button>
+                <button class="nav-item" data-screen="calculator"><span class="text-lg">🧮</span><span>Калькулятор</span></button>
+                <button class="nav-item" data-screen="charts"><span class="text-lg">📈</span><span>Графики и таблицы</span></button>
+            </nav>
+        </div>
+
+        <div class="pt-4 border-t border-gray-800/60 hidden md:block">
+            <button id="btn-profile-desktop" class="w-full flex items-center space-x-3 p-2.5 rounded-xl bg-[#202538] hover:bg-[#282f46] transition-colors border border-gray-700/50">
+                <div class="w-8 h-8 rounded-full bg-indigo-600/30 text-indigo-400 flex items-center justify-center font-bold text-sm">E</div>
+                <div class="text-left overflow-hidden">
+                    <p class="text-xs font-semibold text-gray-200 truncate">Елизавета (Liza)</p>
+                    <p class="text-[10px] text-gray-400 truncate">Студент / Разработчик</p>
+                </div>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
+
+        <!-- 1. ПРИВЕТСТВИЕ -->
+        <section id="screen-welcome" class="screen hidden flex flex-col items-center justify-center min-h-[70vh] text-center space-y-6">
+            <div class="w-20 h-20 rounded-3xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-4xl shadow-2xl">⚡</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight">CircuitMaster</h1>
+            <p class="text-gray-400 text-lg max-w-md">Интерактивный справочник и обучающий курс по электротехнике и электронике</p>
+            <button id="btn-start" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3.5 px-8 rounded-2xl shadow-lg shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95">Начать обучение</button>
+        </section>
+
+        <!-- 2. ГЛАВНАЯ -->
+        <section id="screen-main" class="screen space-y-6">
+            <h2 class="text-2xl font-bold text-white hidden md:block">Главная страница</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-[#1a1e2c] border border-gray-800/80 p-6 rounded-2xl shadow-lg md:col-span-2">
+                    <div class="flex items-center space-x-2 text-indigo-400 font-semibold mb-3"><span>⚡</span><span>Формула дня</span></div>
+                    <p class="text-sm text-gray-400 mb-2">Закон Ома для участка цепи</p>
+                    <div class="text-4xl font-extrabold text-white tracking-wide my-4 bg-[#121420] p-4 rounded-xl border border-gray-800 inline-block">I = U / R</div>
+                    <p class="text-xs text-gray-400 leading-relaxed">Сила тока в участке цепи прямо пропорциональна напряжению и обратно пропорциональна его сопротивлению.</p>
+                </div>
+                <div class="bg-[#1a1e2c] border border-gray-800/80 p-6 rounded-2xl shadow-lg flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-2 text-amber-400 font-semibold mb-3"><span>💡</span><span>Интересный факт</span></div>
+                        <p class="text-sm text-gray-300 leading-relaxed">Георг Ом опубликовал свой закон в 1827 году, но сначала его работы были проигнорированы.</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-800/80 text-xs text-gray-500">Система активна • v1.0</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. КУРС -->
+        <section id="screen-course" class="screen hidden space-y-6">
+            <h2 class="text-2xl font-bold text-white hidden md:block">Обучающий курс</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                
+                <!-- ЧАСТЬ I -->
+                <div class="bg-[#1a1e2c] border border-gray-800/80 rounded-2xl overflow-hidden shadow-lg">
+                    <button class="accordion-header w-full p-5 text-left flex justify-between items-center hover:bg-[#202538] transition-colors">
+                        <div>
+                            <h3 class="font-bold text-gray-100 text-base">Часть I. Свойства и методы расчета цепей при постоянных токах</h3>
+                            <p class="text-xs text-gray-400 mt-1">Параграфов в разделе: 4</p>
+                        </div>
+                        <span class="arrow text-gray-400 text-sm transition-transform duration-200">▲</span>
+                    </button>
+                    <div class="accordion-content p-4 space-y-3 bg-[#121420] border-t border-gray-800/60">
+                        
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 1.</span><span>Основные свойства и линейные цепи</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">1.1. Линейные электрические цепи и их законы</div>
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">1.2. Метод контурных токов</div>
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">1.3. Метод узловых потенциалов</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 2.</span><span>Анализ нелинейных элементов</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">2.1. Вольт-амперные характеристики</div>
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">2.2. Графические методы расчета</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 3.</span><span>Магнитные цепи</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">3.1. Закономерности магнитных полей</div>
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">3.2. Расчет магнитных цепей с постоянными магнитами</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 4.</span><span>Электромагнитные устройства</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">4.1. Трансформаторы и их режимы работы</div>
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">4.2. Электрические машины постоянного тока</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ЧАСТЬ II -->
+                <div class="bg-[#1a1e2c] border border-gray-800/80 rounded-2xl overflow-hidden shadow-lg">
+                    <button class="accordion-header w-full p-5 text-left flex justify-between items-center hover:bg-[#202538] transition-colors">
+                        <div>
+                            <h3 class="font-bold text-gray-100 text-base">Часть II. Основы электроники и устройства</h3>
+                            <p class="text-xs text-gray-400 mt-1">Параграфов в разделе: 7</p>
+                        </div>
+                        <span class="arrow text-gray-400 text-sm transition-transform duration-200">▲</span>
+                    </button>
+                    <div class="accordion-content p-4 space-y-3 bg-[#121420] border-t border-gray-800/60">
+                        
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 5.</span><span>Элементная база электронных устройств</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">5.1. Полупроводниковые диоды</div>
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">5.2. Биполярные и полевые транзисторы</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 6.</span><span>Источники вторичного электропитания</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">6.1. Выпрямители и сглаживающие фильтры</div>
+                                <div class="p-2 bg-[#1a1e2c] hover:bg-[#202538] rounded-lg cursor-pointer">6.2. Стабилизаторы напряжения</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 7.</span><span>Усилители сигналов</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] rounded-lg cursor-pointer">7.1. Основные параметры усилителей</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 8.</span><span>Импульсные устройства</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] rounded-lg cursor-pointer">8.1. Формирователи импульсов</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 9.</span><span>Цифровая электроника</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] rounded-lg cursor-pointer">9.1. Логические элементы</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 10.</span><span>Микропроцессорные средства</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] rounded-lg cursor-pointer">10.1. Архитектура микроконтроллеров</div>
+                            </div>
+                        </div>
+
+                        <div class="nested-accordion border border-gray-800 rounded-xl overflow-hidden bg-[#1a1e2c]">
+                            <button class="nested-header w-full p-3 text-left flex justify-between items-center hover:bg-[#202538] text-sm text-gray-200">
+                                <span class="flex items-center space-x-2"><span class="text-indigo-400 font-bold">§ 11.</span><span>Промышленные приборы</span></span>
+                                <span class="nested-arrow text-xs text-gray-400">▼</span>
+                            </button>
+                            <div class="nested-content p-2.5 space-y-1.5 bg-[#161926] border-t border-gray-800/60 text-xs text-gray-300">
+                                <div class="p-2 bg-[#1a1e2c] rounded-lg cursor-pointer">11.1. Датчики и измерительные системы</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. УЧЕБНИКИ -->
+        <section id="screen-textbooks" class="screen hidden space-y-6">
+            <h2 class="text-2xl font-bold text-white hidden md:block">Учебники и литература</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-[#1a1e2c] border border-gray-800/80 p-6 rounded-2xl shadow-lg">
+                    <h3 class="font-bold text-gray-100 text-lg">Электротехника и электроника</h3>
+                    <p class="text-sm text-indigo-400 mt-2 font-medium">Автор: Воронин М.Я., Горбачев А.П. и др.</p>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">Учебное пособие для студентов вузов.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ТЕСТЫ -->
+        <section id="screen-tests" class="screen hidden min-h-[50vh] flex flex-col items-center justify-center text-center p-6">
+            <div class="p-8 bg-[#1a1e2c] border border-gray-800/80 rounded-2xl max-w-md w-full shadow-lg">
+                <p class="text-gray-300 font-medium">Раздел тестов и проверки знаний находится в разработке</p>
+            </div>
+        </section>
+
+        <!-- 6. РАСШИРЕННЫЙ КАЛЬКУЛЯТОР -->
+        <section id="screen-calculator" class="screen hidden space-y-6 w-full">
+            <div class="flex justify-between items-center hidden md:flex">
+                <h2 class="text-2xl font-bold text-white">Инженерный калькулятор и электрические расчеты</h2>
+                <span class="text-xs bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30">Специализированные модули</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- Левая колонка: Инженерный калькулятор (5 колонок из 12) -->
+                <div class="lg:col-span-5 bg-[#1a1e2c] border border-gray-800/80 p-5 rounded-3xl shadow-xl space-y-4">
+                    <div class="flex items-center justify-between text-xs text-gray-400 font-medium px-1">
+                        <span>Инженерный ввод</span>
+                        <span class="text-indigo-400 font-mono">DEG</span>
+                    </div>
+                    <div class="bg-[#121420] p-4 rounded-2xl border border-gray-800 text-right overflow-hidden">
+                        <span id="calc-display" class="text-3xl font-mono text-white tracking-wider block truncate">0</span>
+                    </div>
+
+                    <!-- Сетка инженерных и базовых кнопок -->
+                    <div class="grid grid-cols-4 gap-2">
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcAppend('(')">(</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcAppend(')')">)</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcSquare()">x²</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcSqrt()">√</button>
+
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcFunction('sin')">sin</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcFunction('cos')">cos</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcFunction('tan')">tan</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcAppend('**')">xʸ</button>
+
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcFunction('exp')">eˣ</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcFunction('ln')">ln</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcAppend('3.14159')">π</button>
+                        <button class="btn-calc bg-[#202538] text-indigo-300 text-xs" onclick="calcFunction('abs')">|x|</button>
+
+                        <button class="btn-calc bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs" onclick="calcClear()">C</button>
+                        <button class="btn-calc bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs" onclick="calcBackspace()">⌫</button>
+                        <button class="btn-calc bg-gray-800 text-gray-300 text-xs" onclick="calcAppend('%')">%</button>
+                        <button class="btn-calc bg-indigo-600/30 text-indigo-300 hover:bg-indigo-600/40 text-xs" onclick="calcAppend('/')">÷</button>
+                        
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('7')">7</button>
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('8')">8</button>
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('9')">9</button>
+                        <button class="btn-calc bg-indigo-600/30 text-indigo-300 hover:bg-indigo-600/40" onclick="calcAppend('*')">×</button>
+                        
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('4')">4</button>
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('5')">5</button>
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('6')">6</button>
+                        <button class="btn-calc bg-indigo-600/30 text-indigo-300 hover:bg-indigo-600/40" onclick="calcAppend('-')">-</button>
+                        
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('1')">1</button>
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('2')">2</button>
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('3')">3</button>
+                        <button class="btn-calc bg-indigo-600/30 text-indigo-300 hover:bg-indigo-600/40" onclick="calcAppend('+')">+</button>
+                        
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700 col-span-2" onclick="calcAppend('0')">0</button>
+                        <button class="btn-calc bg-[#202538] text-white hover:bg-gray-700" onclick="calcAppend('.')">.</button>
+                        <button class="btn-calc bg-indigo-600 text-white font-bold hover:bg-indigo-500 shadow-lg shadow-indigo-600/30" onclick="calcSolve()">=</button>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: Электротехнические расчеты -->
+                <div class="lg:col-span-7 space-y-6">
+                    
+                    <div class="bg-[#1a1e2c] border border-gray-800/80 p-6 rounded-3xl shadow-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800/80 pb-3">
+                            <h3 class="font-bold text-gray-100 flex items-center space-x-2">
+                                <span class="text-indigo-400">⚡</span>
+                                <span>Расчет по закону Ома</span>
+                            </h3>
+                            <span class="text-xs text-gray-400">I = U / R</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Напряжение (U, В)</label>
+                                <input type="number" id="ohm-u" placeholder="Ввод U" class="w-full bg-[#121420] border border-gray-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Сопротивление (R, Ом)</label>
+                                <input type="number" id="ohm-r" placeholder="Ввод R" class="w-full bg-[#121420] border border-gray-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Сила тока (I, А)</label>
+                                <input type="number" id="ohm-i" placeholder="Результат / Ввод" class="w-full bg-[#121420] border border-gray-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                        <button onclick="calculateOhm()" class="w-full py-2.5 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 font-medium rounded-xl text-sm transition-colors border border-indigo-500/30">
+                            Рассчитать
+                        </button>
+                        <p id="ohm-result" class="text-xs text-indigo-400 text-center font-mono min-h-[16px]"></p>
+                    </div>
+
+                    <div class="bg-[#1a1e2c] border border-gray-800/80 p-6 rounded-3xl shadow-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800/80 pb-3">
+                            <h3 class="font-bold text-gray-100 flex items-center space-x-2">
+                                <span class="text-amber-400">🔌</span>
+                                <span>Соединение двух резисторов</span>
+                            </h3>
+                            <span class="text-xs text-gray-400">R1 и R2</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Резистор R1 (Ом)</label>
+                                <input type="number" id="res-r1" placeholder="например 100" class="w-full bg-[#121420] border border-gray-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Резистор R2 (Ом)</label>
+                                <input type="number" id="res-r2" placeholder="например 200" class="w-full bg-[#121420] border border-gray-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 pt-1">
+                            <button onclick="calcResistors('series')" class="py-2.5 bg-[#202538] hover:bg-[#282f46] text-gray-200 font-medium rounded-xl text-xs transition-colors border border-gray-700/50">
+                                Последовательно (R1 + R2)
+                            </button>
+                            <button onclick="calcResistors('parallel')" class="py-2.5 bg-[#202538] hover:bg-[#282f46] text-gray-200 font-medium rounded-xl text-xs transition-colors border border-gray-700/50">
+                                Параллельно
+                            </button>
+                        </div>
+                        <div class="bg-[#121420] p-3 rounded-xl border border-gray-800 text-center">
+                            <span class="text-xs text-gray-400 block mb-1">Эквивалентное сопротивление R_eq:</span>
+                            <span id="res-result" class="text-lg font-bold font-mono text-emerald-400">0 Ом</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 7. ГРАФИКИ -->
+        <section id="screen-charts" class="screen hidden min-h-[50vh] flex flex-col items-center justify-center text-center p-6">
+            <div class="p-8 bg-[#1a1e2c] border border-gray-800/80 rounded-2xl max-w-md w-full shadow-lg">
+                <p class="text-gray-300 font-medium">Раздел графиков и справочных таблиц находится в разработке</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ -->
+    <div id="profile-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
+        <div class="bg-[#1a1e2c] rounded-3xl w-full max-w-md p-6 border border-gray-800 shadow-2xl space-y-5">
+            <div class="flex justify-between items-center border-b border-gray-800/80 pb-4">
+                <h3 class="text-xl font-bold text-white">Профиль и прогресс</h3>
+                <button id="btn-close-profile" class="text-gray-400 hover:text-white p-1">✕</button>
+            </div>
+            
+            <div class="space-y-2 text-sm">
+                <p class="text-gray-300"><span class="text-gray-400">Пользователь:</span> <strong class="text-white">Елизавета (Liza)</strong></p>
+                <p class="text-gray-300"><span class="text-gray-400">Статус:</span> <span class="bg-indigo-500/20 text-indigo-300 px-2.5 py-0.5 rounded-full text-xs font-medium border border-indigo-500/30">Студент / Разработчик</span></p>
+            </div>
+
+            <div class="space-y-2 pt-2">
+                <div class="flex justify-between text-xs font-medium">
+                    <span class="text-gray-400">Трекер прогресса по всем главам:</span>
+                    <span class="text-indigo-400">9%</span>
+                </div>
+                <div class="w-full bg-[#121420] h-2 rounded-full overflow-hidden border border-gray-800">
+                    <div class="bg-indigo-500 h-full w-[9%]"></div>
+                </div>
+            </div>
+
+            <button id="btn-close-profile-bottom" class="w-full py-3 bg-[#202538] hover:bg-[#282f46] text-gray-200 rounded-xl text-sm font-medium transition-colors border border-gray-700/50">Закрыть</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
